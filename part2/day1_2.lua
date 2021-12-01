@@ -5,8 +5,8 @@ for line in io.lines() do
 end
 
 local increased = 0
-for i=2, #numbers, 1 do
-  if numbers[i] > numbers[i - 1] then
+for i=4, #numbers, 1 do
+  if numbers[i] > numbers[i - 3] then
     increased = increased + 1
   end
 end
