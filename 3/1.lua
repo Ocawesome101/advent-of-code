@@ -23,4 +23,5 @@ for i, c in ipairs(counts) do
   end
 end
 
+print(tonumber(gam, 2), tonumber(eps, 2))
 print(tonumber(gam, 2) * tonumber(eps, 2))
