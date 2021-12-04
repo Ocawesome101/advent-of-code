@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
-mkdir $1
-aocdl -output $1/i
+mkdir -p $1
+aocdl -wait -output $1/i
