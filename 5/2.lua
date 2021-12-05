@@ -32,10 +32,10 @@ for line in io.lines("5/i") do
     local diff = bx - ax
     local diff2 = by - ay
     assert(math.abs(diff) == math.abs(diff2))
-    local step = math.abs(diff2) == diff2 and 1 or -1
-    local stepX = math.abs(diff) == diff and 1 or -1
-    for i=1, math.abs(diff), 1 do
-      local ix, iy = ax + ((i - 1) * stepX), ay + ((i - 1) * step)
+    local stepX = (math.abs(diff) == diff) and 1 or -1
+    local stepY = (math.abs(diff2) == diff2) and 1 or -1
+    for i=1, math.abs(diff) + 1, 1 do
+      local ix, iy = ax + ((i - 1) * stepX), ay + ((i - 1) * stepY)
       if grid[ix][iy] == 1 then overlaps = overlaps + 1 end
       grid[ix][iy] = grid[ix][iy] + 1
     end
