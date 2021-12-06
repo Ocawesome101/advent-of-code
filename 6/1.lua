@@ -16,13 +16,10 @@ local function simulate()
       fish[i] = fish[i] - 1
     end
   end
-  print("ADD", newFish)
   for i=1, newFish, 1 do
     table.insert(fish, 8)
   end
 end
-
-print(#fish)
 
 for i=1, 80, 1 do simulate() end
 
