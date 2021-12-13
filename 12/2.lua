@@ -28,16 +28,17 @@ local function search(cave, visited, path)
       paths[#paths+1] = path
       path = copy(path)
       paths[#paths][#paths[#paths]+1] = "end"
-    elseif not visited[k] then
+    elseif (visited[k] or 0) < (visited.twice and 1 or 2) then
       path[#path+1] = k
       local visited = setmetatable({}, {__index = visited})
       if k:lower() == k then
-        visited[k] = true
+        visited[k] = (visited[k] or 0) + 1
+        if visited[k] == 2 then visited.twice = true end
       end
       search(v, visited, copy(path))
     end
   end
 end
 
-search(caves.start, {start=true}, {"start"})
+search(caves.start, {start=2}, {"start"})
 print(#paths)
