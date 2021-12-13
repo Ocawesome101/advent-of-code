@@ -27,7 +27,7 @@ local function checkline(l)
 end
 
 local scores = {}
-for line in io.lines("i") do
+for line in io.lines("10/i") do
   local bad, fin = checkline(line)
   local score = 0
   if not bad then -- not bad just incomplete

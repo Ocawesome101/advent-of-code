@@ -25,7 +25,7 @@ local function checkline(l)
 end
 
 local score = 0
-for line in io.lines("i") do
+for line in io.lines("10/i") do
   local bad = checkline(line)
   if bad == ")" then
     score = score + 3
