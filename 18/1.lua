@@ -1,6 +1,6 @@
 local lines = {}
 
-for line in io.lines("18/t2") do
+for line in io.lines("18/t") do
   local st = assert(load("return " .. 
     line:gsub("%[", "{"):gsub("%]", "}"), "=haha gsub"))()
   lines[#lines+1] = st
@@ -79,40 +79,20 @@ local function parse(flat)
   return flat
 end
 
-local function fromflat(flat)
-  local struct = ""
-  local nu = {0}
-  for i, num in ipairs(flat) do
-    local num, depth = num[1], num[2]
-    if nu[#nu] == 2 then
-      struct = struct .. "},"
-      nu[#nu] = 0
+local function magnitude(tab)
+  local i = 0
+  local lastdepth = 0
+  while i < #tab do
+    i = i + 1
+    local num = tab[i]
+    if num[2] == lastdepth then
+      tab[i - 1] = {tab[i - 1][1] * 3 + num[1] * 2, num[2] - 1}
+      table.remove(tab, i)
+      i = 0
     end
-    if i == 1 then
-      struct = struct .. "{"
-    elseif depth > flat[i - 1][2] then
-      struct = struct .. "{"
-      for i=1, depth - flat[i - 1][2], 1 do
-        struct = struct .. "{"
-        nu[#nu+1] = 0
-      end
-    elseif depth < flat[i - 1][2] then
-      for i=1, flat[i - 1][2] - depth, 1 do
-        struct = struct .. "},"
-        nu[#nu] = nil
-      end
-    end
-    nu[#nu] = (nu[#nu] or 0) + 1
-    struct = struct .. num .. ","
+    lastdepth = num[2]
   end
-  struct = struct .. string.rep("}", flat[#flat][2])
-  print(struct)
-  return assert(load("return " .. struct, "=TIHI"))()
-end
-
-local function magnitude(pair)
-  if type(pair) == "number" then return pair end
-  return magnitude(pair[1]) * 3 + magnitude(pair[2]) * 2
+  return table.unpack(tab[1])
 end
 
 local total
@@ -124,7 +104,7 @@ for i=1, #lines, 1 do
   end
 end
 
-total = fromflat(parse(toflat(total)))
+total = parse(toflat(total))
 
 rp(total)
 print""
