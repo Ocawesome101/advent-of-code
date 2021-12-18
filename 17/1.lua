@@ -13,8 +13,8 @@ end
 
 local my = 0
 
-for vx=1, 300, 1 do
-  for vy=1, 300, 1 do
+for vx=1, 100, 1 do
+  for vy=1, 100, 1 do
     my = math.max(my, cast(vx, vy) or 0)
   end
 end

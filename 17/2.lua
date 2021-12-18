@@ -13,7 +13,7 @@ end
 
 local t = 0
 
-for vx=-100, 300, 1 do
+for vx=0, 300, 1 do
   for vy=-100, 300, 1 do
     if cast(vx, vy) then t = t + 1 end
   end
