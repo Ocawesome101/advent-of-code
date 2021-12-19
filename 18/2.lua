@@ -95,12 +95,9 @@ local function eval(num)
 end
 
 local num = ""
+local lines = {}
 for line in io.lines("18/i") do
-  if #num > 0 then
-    num = eval("[" .. num .. "," .. eval(line) .. "]")
-  else
-    num = eval(line)
-  end
+  lines[#lines+1] = line
 end
 
 local function magnitude(pair)
@@ -109,5 +106,16 @@ local function magnitude(pair)
 end
 
 local rep = {["["] = "{", ["]"] = "}"}
-print(num)
-print(magnitude(assert(load("return " .. num:gsub("[%[%]]", rep), "=tihi"))()))
+local max = 0
+for i=1, #lines - 1, 1 do
+  for j=i+1, #lines, 1 do
+    local num1 = eval("[" .. eval(lines[i]) .. "," .. eval(lines[j]) .. "]")
+    local num2 = eval("[" .. eval(lines[j]) .. "," .. eval(lines[i]) .. "]")
+    local mag1 = magnitude(assert(load("return " .. num1:gsub("[%[%]]", rep),
+      "=tihi1"))())
+    local mag2 = magnitude(assert(load("return " .. num2:gsub("[%[%]]", rep),
+      "=tihi2"))())
+    max = math.max(max, mag1, mag2)
+  end
+end
+print(max)
