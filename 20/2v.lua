@@ -27,6 +27,7 @@ for line in io.lines("20/i") do
   end
 end
 
+local fb = io.open("/dev/fb0", "w")
 for i=1, 50, 1 do
   local new = setmetatable({}, imgmt)
   
@@ -47,22 +48,22 @@ for i=1, 50, 1 do
 
   image = new
   invt = enhance[1] and not invt
-  local fb = io.open("/tmp/frame"..string.format("%02d", i)..".rgb", "w")
   local out = {}
   local scale = 5
   for r=1, #image, 1 do
     local ln = ""
     local row = image[r]
     for c=1, #image[1], 1 do
-      ln = ln .. (row[c] == "#" and "\255\255\255" or "\0\0\0"):rep(scale)
+      ln = ln .. (row[c] == "#" and "\255\255\255\0" or "\0\0\0\0"):rep(scale)
     end
     for s=1, scale do
       out[#out+1] = ln
     end
   end
   for i=1, 1080, 1 do
-    fb:seek("set", 1920 * (i - 1) * 3)
+    fb:seek("set", 1920 * (i - 1) * 4)
     fb:write(out[i] or "", ("\0"):rep(1920 * 3 - #(out[i] or "")))
   end
-  fb:close()
 end
+
+fb:close()
