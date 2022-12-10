@@ -22,7 +22,6 @@ local function checkFrom(x, y, dx, dy)
       return score + 1
     elseif heights[y] and heights[y][x] then
       score = score + 1
-      print(x, y, h, heights[y][x])
     end
   end
 
@@ -33,16 +32,10 @@ local c = 0
 
 for y=1, #heights do
   for x=1, #heights[y] do
-    local s =
-        checkFrom(x, y, 1, 0)
-      * checkFrom(x, y, -1, 0)
-      * checkFrom(x, y, 0, 1)
-      * checkFrom(x, y, 0, -1)
-
-    print(x, y, s, checkFrom(x, y, 1, 0),
-      checkFrom(x, y, -1, 0),
-      checkFrom(x, y, 0, 1),
-      checkFrom(x, y, 0, -1))
+    local s = checkFrom(x, y, 1, 0)
+            * checkFrom(x, y, -1, 0)
+            * checkFrom(x, y, 0, 1)
+            * checkFrom(x, y, 0, -1)
     c = math.max(c, s)
   end
 end
