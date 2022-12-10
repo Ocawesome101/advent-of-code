@@ -2,29 +2,26 @@ local visited = {}
 local points = {}
 for i=1, 10 do points[i] = {x=0, y=0} end
 
-local function corraly(a, pa, pb)
-  if a and (pb.x < pa.x - 1 or pb.x > pa.x + 1) then pb.y = pa.y end
-
-  if pb.y < pa.y - 1 then
-    pb.y = pa.y - 1
-  elseif pb.y > pa.y + 1 then
-    pb.y = pa.y + 1
-  end
+local function sign(n)
+  return n/math.abs(n)
 end
 
-local function corralx(a, pa, pb)
-  if a and (pb.y < pa.y - 1 or pb.y > pa.y + 1) then pb.x = pa.x end
-
-  if pb.x < pa.x - 1 then
-    pb.x = pa.x - 1
-  elseif pb.x > pa.x + 1 then
-    pb.x = pa.x + 1
+local function corral(pa, pb)
+  if math.abs(pb.x - pa.x) > 1 then
+    -- diagonal?
+    if math.abs(pb.y - pa.y) == 1 then
+      pb.y = pb.y - sign(pb.y - pa.y)
+    end
+    pb.x = pb.x - sign(pb.x - pa.x)
   end
-end
 
-local function corral(isx, pa, pb)
-  if isx then corraly(true, pa, pb) corralx(nil, pa, pb)
-  else corralx(true, pa, pb) corraly(nil, pa, pb) end
+  if math.abs(pb.y - pa.y) > 1 then
+    -- diagonal?
+    if math.abs(pb.x - pa.x) == 1 then
+      pb.x = pb.x - sign(pb.x - pa.x)
+    end
+    pb.y = pb.y - sign(pb.y - pa.y)
+  end
 end
 
 local motions = {}
@@ -46,40 +43,42 @@ function motions.D(n, pa)
   pa.y = pa.y - n
 end
 
-local mx, my, MX = 0, 0, 0
+local mx, my, MX, MY = 0, 0, 0, 0
 local function vis()
-  for y=my, #visited do
+  local o = "\27[2J\27[1;1H"
+  for y=MY, my, -1 do
+    local l = ""
     for x=mx, MX do
       local w = false
-      for n=1, #points do
+      for n=#points, 1, -1 do
         local p = points[n]
         if p.x == x and p.y == y then
-          io.write(n-1)
+          l = l .. (n - 1)
           w = true
           break
         end
       end
       if not w then
-        if visited[y] and visited[y][x] then io.write("#")
-        else io.write(".") end
+        if visited[y] and visited[y][x] then l = l .. "#"
+        else l = l .. "." end
       end
     end
-    io.write("\n")
+    o = o .. (l.."\n")
   end
-  io.write("\n")
+  io.write(o)
 end
 
 local v = 0
 for line in io.lines() do
   local m, n = line:match("(.) (%d+)")
   for _=1, tonumber(n) do
-    local x = motions[m](1, points[1])
+    motions[m](1, points[1])
 
     for i=1, #points-1 do
       local pa, pb = points[i], points[i+1]
-      corral(x, pa, pb)
-      mx, my, MX = math.min(mx, pa.x, pb.x), math.min(my, pa.y, pb.y),
-        math.max(MX, pa.x, pb.x)
+      corral(pa, pb)
+      mx, my, MX, MY = math.min(mx, pa.x, pb.x), math.min(my, pa.y, pb.y),
+        math.max(MX, pa.x, pb.x), math.max(MY, pa.y, pb.y)
     end
 
     local pb = points[#points]
