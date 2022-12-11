@@ -9,7 +9,7 @@ end
 local function corral(pa, pb)
   if math.abs(pb.x - pa.x) > 1 then
     -- diagonal?
-    if math.abs(pb.y - pa.y) == 1 then
+    if math.abs(pb.y - pa.y) > 0 then
       pb.y = pb.y - sign(pb.y - pa.y)
     end
     pb.x = pb.x - sign(pb.x - pa.x)
@@ -17,7 +17,7 @@ local function corral(pa, pb)
 
   if math.abs(pb.y - pa.y) > 1 then
     -- diagonal?
-    if math.abs(pb.x - pa.x) == 1 then
+    if math.abs(pb.x - pa.x) > 0 then
       pb.x = pb.x - sign(pb.x - pa.x)
     end
     pb.y = pb.y - sign(pb.y - pa.y)
@@ -45,12 +45,12 @@ end
 
 local mx, my, MX, MY = 0, 0, 0, 0
 local function vis()
-  local o = "\27[2J\27[1;1H"
+  local o = "\n"--"\27[2J\27[1;1H"
   for y=MY, my, -1 do
     local l = ""
     for x=mx, MX do
       local w = false
-      for n=#points, 1, -1 do
+      for n=1, #points, 1 do
         local p = points[n]
         if p.x == x and p.y == y then
           l = l .. (n - 1)
@@ -86,7 +86,7 @@ for line in io.lines() do
     if not visited[pb.y][pb.x] then v = v + 1 end
     visited[pb.y][pb.x] = true
 
-    vis()
+    --vis()
   end
 end
 
