@@ -49,13 +49,11 @@ end
 local v = 0
 for line in io.lines() do
   local m, n = line:match("(.) (%d+)")
-  print(m, n)
   for _=1, tonumber(n) do
     motions[m](1)
     visited[tail.y] = visited[tail.y] or {}
     if not visited[tail.y][tail.x] then v = v + 1 end
     visited[tail.y][tail.x] = true
-    print("\t", head.x, head.y, tail.x, tail.y)
   end
 end
 
