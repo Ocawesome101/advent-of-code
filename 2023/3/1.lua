@@ -22,7 +22,6 @@ for _, num in pairs(numbers) do
     for I=math.max(1, index-1), index+length do
       if schem[L] and schem[L][I] then
         sum = sum + value
-        print(value, schem[L][I])
         b = true
         break
       end
