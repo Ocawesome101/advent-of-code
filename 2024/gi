@@ -8,6 +8,13 @@ import sys
 
 for line in sys.stdin.readlines():
   
+EOF
+
+cat > $1/1.lua << EOF
+
+for line in io.lines() do
+
+end
 
 EOF
 
