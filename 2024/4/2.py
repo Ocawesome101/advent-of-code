@@ -17,7 +17,6 @@ def search(x, y):
         corners = get(x-1,y-1) + get(x+1,y-1) + get(x+1,y+1) + get(x-1,y+1)
         if corners == "MMSS" or corners == "SMMS" or corners == "SSMM" or corners == "MSSM":
             return 1
-        print(corners)
     return 0
 
 
